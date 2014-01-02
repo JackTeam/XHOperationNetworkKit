@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^XHHTTPProgressHandler)(CGFloat progress, CGFloat total);
+typedef void (^XHHTTPProgressHandler)(CGFloat progress, unsigned long long total);
 typedef void (^XHJSONSuccessHandler)(id json, NSURLResponse *response);
 typedef void (^XHHTTPSuccessHandler)(NSData *responseData, NSURLResponse *response);
 typedef void (^XHHTTPFailureHandler)(NSData *responseData, NSURLResponse *response, NSError *error);

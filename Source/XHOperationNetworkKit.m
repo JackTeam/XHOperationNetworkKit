@@ -9,6 +9,9 @@
 #import "XHOperationNetworkKit.h"
 
 @interface XHOperationNetworkKit () <NSURLConnectionDelegate, NSURLConnectionDataDelegate> {
+    __block unsigned long long _total;
+    __block unsigned long long _currentSize;
+    
     NSURLConnection *_connection;
     NSMutableData *_responseData;
     NSURLResponse *_response;
@@ -96,7 +99,9 @@
 {
     if (_failureHandler)
     {
-        _failureHandler(_responseData, _response, error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _failureHandler(_responseData, _response, error);
+        });
     }
     [self setFinished:YES];
 }
@@ -109,13 +114,19 @@
     BOOL success = [[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)] containsIndex:[response statusCode]];
     
     if ((success && _successHandler)) {
-        _successHandler(_responseData, _response);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _successHandler(_responseData, _response);
+        });
     } else if ((success && _jsonSuccessHandler)) {
         NSError *parseError;
-        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:&parseError];
-        _jsonSuccessHandler(JSON, _response);
+        __block NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:&parseError];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _jsonSuccessHandler(JSON, _response);
+        });
     } else if (!success && _failureHandler) {
-        _failureHandler(_responseData, _response, nil);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _failureHandler(_responseData, _response, nil);
+        });
     }
     
     [self setFinished:YES];
@@ -123,11 +134,31 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
+    if (_progressHandler) {
+        NSUInteger realLength = data.length;
+        _currentSize += (unsigned long long)realLength;
+        CGFloat progress = (float)_currentSize / (float)_total;
+        if (progress < 0) {
+            progress = 0;
+        } else if (progress > 1) {
+            progress = 1;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _progressHandler(progress, _total);
+        });
+    }
     [_responseData appendData:data];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
+    if (_progressHandler) {
+        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
+        if ([httpURLResponse statusCode] == 200) {
+            _total = (unsigned long long)[httpURLResponse expectedContentLength];
+        }
+    }
+    
     _responseData = [NSMutableData new];
     _response = response;
 }

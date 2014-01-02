@@ -34,6 +34,9 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
     } failureHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
         NSLog(@"Failed to get top stories");
     }];
+    [operation setProgressHandler:^(CGFloat progress, unsigned long long total) {
+        NSLog(@"progress : %f,  total : %f", progress, (float)total);
+    }];
     [self.queue addOperation:operation];
 }
 
