@@ -7,12 +7,51 @@
 //
 
 #import "ViewController.h"
+#import "XHOperationNetworkKit.h"
+
+static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.json";
 
 @interface ViewController ()
+
+@property (nonatomic, strong) NSOperationQueue *queue;
 
 @end
 
 @implementation ViewController
+
+- (NSOperationQueue *)queue {
+    if (!_queue) {
+        _queue = [[NSOperationQueue alloc] init];
+    }
+    return _queue;
+}
+
+- (void)_getRedditTopStories
+{
+    NSURL *url = [NSURL URLWithString:RedditTopStoriesURLString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    XHOperationNetworkKit *operation = [[XHOperationNetworkKit alloc] initWithRequest:request successHandler:^(NSData *responseData, NSURLResponse *response) {
+        
+        NSError *parseError;
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&parseError];
+        NSAssert(!parseError, @"Failed to parse responseData");
+        
+        NSLog(@"Top Stories: %@", JSON[@"data"][@"children"]);
+        
+    } failureHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
+        
+        NSLog(@"Failed to get top stories");
+        
+    }];
+    
+    [self.queue addOperation:operation];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self _getRedditTopStories];
+}
 
 - (void)viewDidLoad
 {
