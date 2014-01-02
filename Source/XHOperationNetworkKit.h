@@ -8,21 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^XHHTTPProgressHandler)(CGFloat progress, CGFloat total);
+typedef void (^XHJSONSuccessHandler)(id json, NSURLResponse *response);
 typedef void (^XHHTTPSuccessHandler)(NSData *responseData, NSURLResponse *response);
 typedef void (^XHHTTPFailureHandler)(NSData *responseData, NSURLResponse *response, NSError *error);
 
 @interface XHOperationNetworkKit : NSOperation
 
-@property (nonatomic, copy) NSURLRequest *request;
-
 - (id)initWithRequest:(NSURLRequest *)request;
-
+- (id)initWithRequest:(NSURLRequest *)request
+   jsonSuccessHandler:(XHJSONSuccessHandler)jsonSuccessHandler
+       failureHandler:(XHHTTPFailureHandler)failureHandler;
 - (id)initWithRequest:(NSURLRequest *)request
        successHandler:(XHHTTPSuccessHandler)successHandler
        failureHandler:(XHHTTPFailureHandler)failureHandler;
 
-- (void)setSuccessHandler:(XHHTTPSuccessHandler)successHandler;
 
+- (void)setSuccessHandler:(XHHTTPSuccessHandler)successHandler;
 - (void)setFailureHandler:(XHHTTPFailureHandler)failureHandler;
+- (void)setProgressHandler:(XHHTTPProgressHandler)progressHandler;
 
 @end

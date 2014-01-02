@@ -26,6 +26,17 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
     return _queue;
 }
 
+- (void)_getJSONWithRedditTopStories {
+    NSURL *url = [NSURL URLWithString:RedditTopStoriesURLString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    XHOperationNetworkKit *operation = [[XHOperationNetworkKit alloc] initWithRequest:request jsonSuccessHandler:^(id json, NSURLResponse *response) {
+        NSLog(@"json : %@", json);
+    } failureHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
+        NSLog(@"Failed to get top stories");
+    }];
+    [self.queue addOperation:operation];
+}
+
 - (void)_getRedditTopStories
 {
     NSURL *url = [NSURL URLWithString:RedditTopStoriesURLString];
@@ -50,7 +61,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self _getRedditTopStories];
+    [self _getJSONWithRedditTopStories];
 }
 
 - (void)viewDidLoad

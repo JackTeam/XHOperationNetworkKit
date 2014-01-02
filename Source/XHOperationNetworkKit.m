@@ -12,15 +12,19 @@
     NSURLConnection *_connection;
     NSMutableData *_responseData;
     NSURLResponse *_response;
+    XHJSONSuccessHandler _jsonSuccessHandler;
     XHHTTPSuccessHandler _successHandler;
     XHHTTPFailureHandler _failureHandler;
+    XHHTTPProgressHandler _progressHandler;
 }
 
+@property (nonatomic, copy) NSURLRequest *request;
 @property (nonatomic, readwrite, getter = isFinished) BOOL finished;
 
 @end
 
 @implementation XHOperationNetworkKit
+
 #pragma mark - NSOperation Overrides
 
 - (void)main
@@ -39,6 +43,14 @@
 
 #pragma mark - Instance Methods
 
+- (void)setProgressHandler:(XHHTTPProgressHandler)progressHandler {
+    _progressHandler = [progressHandler copy];
+}
+
+- (void)setJSONSuccessHandler:(XHJSONSuccessHandler)jsonSuccessHandler {
+    _jsonSuccessHandler = [jsonSuccessHandler copy];
+}
+
 - (void)setSuccessHandler:(XHHTTPSuccessHandler)successHandler
 {
     _successHandler = [successHandler copy];
@@ -47,6 +59,18 @@
 - (void)setFailureHandler:(XHHTTPFailureHandler)failureHandler
 {
     _failureHandler = [failureHandler copy];
+}
+
+- (id)initWithRequest:(NSURLRequest *)request
+   jsonSuccessHandler:(XHJSONSuccessHandler)jsonSuccessHandler
+       failureHandler:(XHHTTPFailureHandler)failureHandle {
+    self = [super init];
+    if (self) {
+        [self setRequest:request];
+        [self setJSONSuccessHandler:jsonSuccessHandler];
+        [self setFailureHandler:failureHandle];
+    }
+    return self;
 }
 
 - (id)initWithRequest:(NSURLRequest *)request successHandler:(XHHTTPSuccessHandler)successHandler failureHandler:(XHHTTPFailureHandler)failureHandler
@@ -84,12 +108,13 @@
     NSHTTPURLResponse *response = (NSHTTPURLResponse *)_response;
     BOOL success = [[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)] containsIndex:[response statusCode]];
     
-    if (success && _successHandler)
-    {
+    if ((success && _successHandler)) {
         _successHandler(_responseData, _response);
-    }
-    else if (!success && _failureHandler)
-    {
+    } else if ((success && _jsonSuccessHandler)) {
+        NSError *parseError;
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:&parseError];
+        _jsonSuccessHandler(JSON, _response);
+    } else if (!success && _failureHandler) {
         _failureHandler(_responseData, _response, nil);
     }
     
