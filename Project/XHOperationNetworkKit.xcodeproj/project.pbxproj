@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB4A749B1875ABB400450882 /* XHOperationNetworkKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4A749A1875ABB400450882 /* XHOperationNetworkKit.m */; };
+		AB9A18F5187889770091CFF5 /* XHHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9A18F4187889770091CFF5 /* XHHTTPClient.m */; };
 		ABDC9D351875AB4A0009B405 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABDC9D341875AB4A0009B405 /* Foundation.framework */; };
 		ABDC9D371875AB4A0009B405 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABDC9D361875AB4A0009B405 /* CoreGraphics.framework */; };
 		ABDC9D391875AB4A0009B405 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABDC9D381875AB4A0009B405 /* UIKit.framework */; };
@@ -38,6 +39,8 @@
 /* Begin PBXFileReference section */
 		AB4A74991875ABB400450882 /* XHOperationNetworkKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHOperationNetworkKit.h; sourceTree = "<group>"; };
 		AB4A749A1875ABB400450882 /* XHOperationNetworkKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHOperationNetworkKit.m; sourceTree = "<group>"; };
+		AB9A18F3187889770091CFF5 /* XHHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHHTTPClient.h; sourceTree = "<group>"; };
+		AB9A18F4187889770091CFF5 /* XHHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHHTTPClient.m; sourceTree = "<group>"; };
 		ABDC9D311875AB4A0009B405 /* XHOperationNetworkKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XHOperationNetworkKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABDC9D341875AB4A0009B405 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ABDC9D361875AB4A0009B405 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -89,6 +92,8 @@
 			children = (
 				AB4A74991875ABB400450882 /* XHOperationNetworkKit.h */,
 				AB4A749A1875ABB400450882 /* XHOperationNetworkKit.m */,
+				AB9A18F3187889770091CFF5 /* XHHTTPClient.h */,
+				AB9A18F4187889770091CFF5 /* XHHTTPClient.m */,
 			);
 			name = Source;
 			path = ../Source;
@@ -269,6 +274,7 @@
 			files = (
 				ABDC9D4E1875AB4A0009B405 /* ViewController.m in Sources */,
 				AB4A749B1875ABB400450882 /* XHOperationNetworkKit.m in Sources */,
+				AB9A18F5187889770091CFF5 /* XHHTTPClient.m in Sources */,
 				ABDC9D451875AB4A0009B405 /* AppDelegate.m in Sources */,
 				ABDC9D411875AB4A0009B405 /* main.m in Sources */,
 			);

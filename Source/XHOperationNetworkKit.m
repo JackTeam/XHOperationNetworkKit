@@ -28,6 +28,15 @@
 
 @implementation XHOperationNetworkKit
 
++ (NSOperationQueue *)queue {
+    static NSOperationQueue *queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        queue = [[NSOperationQueue alloc] init];
+    });
+    return queue;
+}
+
 #pragma mark - NSOperation Overrides
 
 - (void)main

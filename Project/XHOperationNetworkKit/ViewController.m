@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "XHOperationNetworkKit.h"
+#import "XHHTTPClient.h"
 
 static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.json";
 
@@ -24,6 +25,39 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
         _queue = [[NSOperationQueue alloc] init];
     }
     return _queue;
+}
+
+- (void)_registerToServer {
+    [XHHTTPClient POSTPath:@"/jack/XHSocial/register.php" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"gaga121ff1", @"username", @"1234561", @"password", @"example1@QQ.com", @"email", nil] jsonSuccessHandler:^(id json, NSURLResponse *response) {
+        /*
+         // 用户相关的
+         define('USERNAME_IS_NULL', '40020');
+         define('PASSWORLD_IS_NULL', '40021');
+         define('EMAIL_IS_NULL', '40022');
+         
+         // 注册的
+         define('UERNAME_IS_ALREADY_IN_USE', '40023');
+         define('EMAIL_IS_ALREADY_IN_USE', '40024');
+         define('REGISTER_SUECCEED', '40025');
+         */
+        NSLog(@"json : %@", json);
+    } failureHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
+        NSLog(@"error : %@", error);
+    }];
+}
+
+
+- (void)_loginToServer {
+    [XHHTTPClient GETPath:@"/jack/XHSocial/login.php" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"gaga", @"username", @"123456", @"password", nil] jsonSuccessHandler:^(id json, NSURLResponse *response) {
+        /*
+         // 登录的
+         define('LOGIN_SEUCCEED', '50020');
+         define('LOGIN_FIELD', '50030');
+         */
+        NSLog(@"json : %@", json);
+    } failureHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
+        NSLog(@"error : %@", error);
+    }];
 }
 
 - (void)_getJSONWithRedditTopStories {
@@ -64,7 +98,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self _getJSONWithRedditTopStories];
+    [self _registerToServer];
 }
 
 - (void)viewDidLoad
