@@ -29,6 +29,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
 
 - (void)_registerToServer {
     [XHHTTPClient POSTPath:@"/jack/XHSocial/register.php" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"gaga121ff1", @"username", @"1234561", @"password", @"example1@QQ.com", @"email", nil] jsonSuccessHandler:^(id json, NSURLResponse *response) {
+        
         /*
          // 用户相关的
          define('USERNAME_IS_NULL', '40020');
