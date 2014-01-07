@@ -130,7 +130,7 @@
         NSError *parseError;
         __block NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:&parseError];
         dispatch_async(dispatch_get_main_queue(), ^{
-            _jsonSuccessHandler(JSON, _response);
+            _jsonSuccessHandler(JSON);
         });
     } else if (!success && _failureHandler) {
         dispatch_async(dispatch_get_main_queue(), ^{

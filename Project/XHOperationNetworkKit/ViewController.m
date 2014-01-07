@@ -28,7 +28,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
 }
 
 - (void)_registerToServer {
-    [XHHTTPClient POSTPath:@"/jack/XHSocial/register.php" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"gaga121ff1", @"username", @"1234561", @"password", @"example1@QQ.com", @"email", nil] jsonSuccessHandler:^(id json, NSURLResponse *response) {
+    [XHHTTPClient POSTPath:@"/jack/XHSocial/register.php" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"gaga121ff1", @"username", @"1234561", @"password", @"example1@QQ.com", @"email", nil] jsonSuccessHandler:^(id json) {
         /*
          // 用户相关的
          define('USERNAME_IS_NULL', '40020');
@@ -48,7 +48,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
 
 
 - (void)_loginToServer {
-    [XHHTTPClient GETPath:@"/jack/XHSocial/login.php" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"gaga", @"username", @"123456", @"password", nil] jsonSuccessHandler:^(id json, NSURLResponse *response) {
+    [XHHTTPClient GETPath:@"/jack/XHSocial/login.php" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"gaga", @"username", @"123456", @"password", nil] jsonSuccessHandler:^(id json) {
         /*
          // 登录的
          define('LOGIN_SEUCCEED', '50020');
@@ -63,7 +63,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
 - (void)_getJSONWithRedditTopStories {
     NSURL *url = [NSURL URLWithString:RedditTopStoriesURLString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    XHOperationNetworkKit *operation = [[XHOperationNetworkKit alloc] initWithRequest:request jsonSuccessHandler:^(id json, NSURLResponse *response) {
+    XHOperationNetworkKit *operation = [[XHOperationNetworkKit alloc] initWithRequest:request jsonSuccessHandler:^(id json) {
         NSLog(@"json : %@", json);
     } failureHandler:^(NSData *responseData, NSURLResponse *response, NSError *error) {
         NSLog(@"Failed to get top stories");
