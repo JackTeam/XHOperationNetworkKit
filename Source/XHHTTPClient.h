@@ -20,5 +20,8 @@ failureHandler:(XHHTTPFailureHandler)failureHandler;
 + (void)POSTPath:(NSString *)urlString parameters:(NSDictionary *)parameters jsonSuccessHandler:(XHJSONSuccessHandler)jsonSuccessHandler
 failureHandler:(XHHTTPFailureHandler)failureHandler;
 
++ (void)DELETEPath:(NSString *)urlString parameters:(NSDictionary *)parameters jsonSuccessHandler:(XHJSONSuccessHandler)jsonSuccessHandler
+    failureHandler:(XHHTTPFailureHandler)failureHandler;
+
 
 @end

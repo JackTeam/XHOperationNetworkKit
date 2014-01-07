@@ -44,6 +44,12 @@ failureHandler:(XHHTTPFailureHandler)failureHandler {
     [[XHOperationNetworkKit queue] addOperation:operation];
 }
 
++ (void)DELETEPath:(NSString *)urlString parameters:(NSDictionary *)parameters jsonSuccessHandler:(XHJSONSuccessHandler)jsonSuccessHandler
+    failureHandler:(XHHTTPFailureHandler)failureHandler {
+    XHOperationNetworkKit *operation = [[XHOperationNetworkKit alloc] initWithRequest:[self requestWithURLString:urlString HTTPMethod:@"POST" parameters:parameters] jsonSuccessHandler:jsonSuccessHandler failureHandler:failureHandler];
+    [[XHOperationNetworkKit queue] addOperation:operation];
+}
+
 + (NSMutableURLRequest *)requestWithURLString:(NSString *)urlString HTTPMethod:(NSString *)method parameters:(NSDictionary *)parameters {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setHTTPMethod:method];
