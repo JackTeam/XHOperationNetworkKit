@@ -71,7 +71,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
     [operation setProgressHandler:^(CGFloat progress, unsigned long long total) {
         NSLog(@"progress : %f,  total : %f", progress, (float)total);
     }];
-    [self.queue addOperation:operation];
+    [operation startRequest];
 }
 
 - (void)_getRedditTopStories
@@ -98,7 +98,7 @@ static NSString *const RedditTopStoriesURLString = @"http://www.reddit.com/top.j
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self _registerToServer];
+    [self _getJSONWithRedditTopStories];
 }
 
 - (void)viewDidLoad

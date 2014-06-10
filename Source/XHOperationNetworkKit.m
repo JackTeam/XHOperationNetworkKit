@@ -37,18 +37,20 @@
     return queue;
 }
 
+- (void)startRequest {
+    [[XHOperationNetworkKit queue] addOperation:self];
+}
+
 #pragma mark - NSOperation Overrides
 
-- (void)main
-{
+- (void)main {
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
     
     _connection = [[NSURLConnection alloc] initWithRequest:[self request] delegate:self startImmediately:NO];
     [_connection scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
     [_connection start];
     
-    while (![self isFinished] && [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
-    {
+    while (![self isFinished] && [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
         
     };
 }
@@ -63,13 +65,11 @@
     _jsonSuccessHandler = [jsonSuccessHandler copy];
 }
 
-- (void)setSuccessHandler:(XHHTTPSuccessHandler)successHandler
-{
+- (void)setSuccessHandler:(XHHTTPSuccessHandler)successHandler {
     _successHandler = [successHandler copy];
 }
 
-- (void)setFailureHandler:(XHHTTPFailureHandler)failureHandler
-{
+- (void)setFailureHandler:(XHHTTPFailureHandler)failureHandler {
     _failureHandler = [failureHandler copy];
 }
 
@@ -85,11 +85,9 @@
     return self;
 }
 
-- (id)initWithRequest:(NSURLRequest *)request successHandler:(XHHTTPSuccessHandler)successHandler failureHandler:(XHHTTPFailureHandler)failureHandler
-{
+- (id)initWithRequest:(NSURLRequest *)request successHandler:(XHHTTPSuccessHandler)successHandler failureHandler:(XHHTTPFailureHandler)failureHandler {
     self = [super init];
-    if (self)
-    {
+    if (self) {
         [self setRequest:request];
         [self setSuccessHandler:successHandler];
         [self setFailureHandler:failureHandler];
@@ -97,15 +95,13 @@
     return self;
 }
 
-- (id)initWithRequest:(NSURLRequest *)request
-{
+- (id)initWithRequest:(NSURLRequest *)request {
     return [self initWithRequest:request successHandler:nil failureHandler:nil];
 }
 
 #pragma mark - NSURLConnectionDelegate Methods
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     if (_failureHandler)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -117,8 +113,7 @@
 
 #pragma mark - NSURLConnectionDataDelegate Methods
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSHTTPURLResponse *response = (NSHTTPURLResponse *)_response;
     BOOL success = [[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)] containsIndex:[response statusCode]];
     
@@ -141,8 +136,7 @@
     [self setFinished:YES];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     if (_progressHandler) {
         NSUInteger realLength = data.length;
         _currentSize += (unsigned long long)realLength;
@@ -159,8 +153,7 @@
     [_responseData appendData:data];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     if (_progressHandler) {
         NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
         if ([httpURLResponse statusCode] == 200) {

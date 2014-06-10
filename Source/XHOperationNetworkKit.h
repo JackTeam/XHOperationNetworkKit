@@ -30,4 +30,6 @@ typedef void (^XHHTTPFailureHandler)(NSData *responseData, NSURLResponse *respon
 - (void)setFailureHandler:(XHHTTPFailureHandler)failureHandler;
 - (void)setProgressHandler:(XHHTTPProgressHandler)progressHandler;
 
+- (void)startRequest;
+
 @end
